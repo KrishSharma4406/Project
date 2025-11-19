@@ -1,13 +1,28 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { SalesChart } from '@/components/organisms/SalesChart';
+import dynamic from 'next/dynamic';
 import { SalesStats } from '@/components/organisms/SalesStats';
 import { YearSelector } from '@/components/molecules/YearSelector';
 import { ChartTypeSelector } from '@/components/molecules/ChartTypeSelector';
 import { SalesFilterInput } from '@/components/molecules/SalesFilterInput';
 import { salesData, getAllYears, getYearlyData } from '@/lib/salesData';
 import { ChartType } from '@/types/sales';
+
+// Dynamically import SalesChart to avoid SSR issues with Recharts
+const SalesChart = dynamic(
+  () => import('@/components/organisms/SalesChart').then(mod => ({ default: mod.SalesChart })),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="bg-white rounded-xl shadow-lg p-6 w-full">
+        <div className="flex items-center justify-center h-[400px]">
+          <div className="text-gray-500">Loading chart...</div>
+        </div>
+      </div>
+    )
+  }
+);
 
 export default function Dashboard() {
   const [selectedYear, setSelectedYear] = useState<number>(2024);
