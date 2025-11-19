@@ -27,7 +27,7 @@ interface SalesChartProps {
 
 const COLORS = ['#3B82F6', '#8B5CF6', '#10B981', '#F59E0B', '#EF4444', '#EC4899'];
 
-export const SalesChart: React.FC<SalesChartProps> = ({ data, chartType, title }) => {
+const SalesChart: React.FC<SalesChartProps> = ({ data, chartType, title }) => {
   const renderChart = () => {
     switch (chartType) {
       case 'bar':
@@ -124,7 +124,7 @@ export const SalesChart: React.FC<SalesChartProps> = ({ data, chartType, title }
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                label={({ name, percent }) => `${name}: ${percent ? (percent * 100).toFixed(0) : 0}%`}
                 outerRadius={120}
                 fill="#8884d8"
                 dataKey="value"
@@ -149,3 +149,5 @@ export const SalesChart: React.FC<SalesChartProps> = ({ data, chartType, title }
     </Card>
   );
 };
+
+export default SalesChart;
